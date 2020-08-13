@@ -1,4 +1,4 @@
-Improving your performance in leetcode is much more than implementing a suitable algorithm, Here are some tips to improve runtime. These are my coding experience using Javascript. You may test in other languages, and all of your comments will be appreciated.
+Improving your performance is much more than implementing a suitable algorithm. Here are some tips to improve runtime, which are my coding experience using Javascript
 
 # Bitwise
 * `(n & 1) === 0` &xlarr; `n % 2 === 0`
