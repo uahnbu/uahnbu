@@ -62,9 +62,20 @@ Furthermore, you can sort **multiple** same-lengthed arrays simultaneously. E.g.
 ```
 const scores = [5, 2, 5, 8, 4];
 const indexes = Array(scores.length).fill().map((_, i) => i);
-const quickSort = (arr, dependence, left, right) => {
-    // (☆)
-	i <= j && (swap(arr, i, j), swap(dependence, i, j));
+const quickSort = (arr, dep, left, right, dir) => {
+  if (arr.length <= 1) return;
+  let pivot = arr[right + left >> 1];
+  let i = left, j = right, tmp;
+  while (i <= j) {
+    while (arr[i] * dir < pivot * dir) i++;
+    while (arr[j] * dir > pivot * dir) j--;
+    i <= j && (
+      dep && (tmp = dep[i], dep[i] = dep[j], dep[j] = tmp),
+      tmp = arr[i], arr[i++] = arr[j], arr[j--] = tmp
+    );
+  }
+  left < i - 1 && quickSort(arr, dep, left, i - 1, dir);
+  i < right && quickSort(arr, dep, i, right, dir);
 };
 quickSort(scores, indexes);
 ```
