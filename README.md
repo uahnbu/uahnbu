@@ -44,7 +44,7 @@ let i = 0; for (; tmp[i] = arr[i], arr[i] >>= 1, i++ < arr.length ;);
 
 # Sort
 A manual quick sort function is faster than the built-in one.
-```
+```javascript
 const quickSort = (arr, left = 0, right = arr.length - 1) => {
   if (arr.length <= 1) return;
   let pivot = arr[right + left >> 1];
@@ -59,7 +59,7 @@ const quickSort = (arr, left = 0, right = arr.length - 1) => {
 };
 ```
 Furthermore, you can sort **multiple** same-lengthed arrays simultaneously. E.g.
-```
+```javascript
 const scores = [5, 2, 5, 8, 4];
 const indexes = Array(scores.length).fill().map((_, i) => i);
 const quickSort = (arr, dep, left, right, dir) => {
@@ -80,7 +80,7 @@ const quickSort = (arr, dep, left, right, dir) => {
 quickSort(scores, indexes);
 ```
 Besides, the trick below will increase your sorting speed by 4 times so long as the elements of your array are all numbers of unsigned 32-bit integers:
-```
+```javascript
 function cheatSort(arr) {
   const counter = arr.reduce((cnt, ele) => (cnt[ele] = (cnt[ele] || 0) + 1, cnt), {});
   // (☆)
