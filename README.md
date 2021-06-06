@@ -77,7 +77,7 @@ const quickSort = (arr, dep, left, right, dir) => {
   left < i - 1 && quickSort(arr, dep, left, i - 1, dir);
   i < right && quickSort(arr, dep, i, right, dir);
 };
-quickSort(scores, indexes);
+quickSort(scores, indexes, 0, scores.length - 1, -1);
 ```
 Besides, the trick below will increase your sorting speed by 4 times so long as the elements of your array are all numbers of unsigned 32-bit integers:
 ```javascript
@@ -104,3 +104,34 @@ Storing the number of rows and columns for 2d-array is advisable.
 * Working with an array of **characters** is faster than working with a string.
 * `str.slice(1).reduce(() => {})` &xlarr; `for (let i = 1; i < str.length; i++) {}`
 * **Set** is faster than Array, **Object** is faster than Map. Use Map when you work with multiple `add` and `delete`.
+
+#Frequently used functions
+```javascript
+function PriorityQueue(cf) {
+  const list = [];
+  this.size = () => list.length;
+  this.enqueue = item => (list[list.length] = item, up(list.length - 1));
+  this.dequeue = function() {
+    if (list.length === 0) return;
+    const head = list[0];
+    list[0] = list[list.length - 1];
+    list.length--;
+    down(0);
+    return head;
+  };
+  function up(child) {
+    if (child === 0) return;
+    const parent = child - 1 >> 1;
+    cf(list[child], list[parent]) && (swap(child, parent), up(parent));
+  }
+  function down(parent) {
+    const left = parent << 1 | 1, right = left + 1;
+    let child = -1;
+    left < list.length && (child = left);
+    right < list.length && cf(list[right], list[left]) && (child = right);
+    cf(list[child], list[parent]) && (swap(child, parent), down(child));
+  }
+  function swap(a, b) { const tmp = list[a]; list[a] = list[b]; list[b] = tmp }
+}
+var minPriorityQueue = new PriorityQueue((a, b) => a < b);
+```
