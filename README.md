@@ -104,8 +104,8 @@ Storing the number of rows and columns for 2d-array is advisable.
 * Working with an array of **characters** is faster than working with a string.
 * `str.slice(1).reduce(() => {})` &xlarr; `for (let i = 1; i < str.length; i++) {}`
 * **Set** is faster than Array, **Object** is faster than Map. Use Map when you work with multiple `add` and `delete`.
-
-#Frequently used functions
+---
+# Frequently used functions
 ```javascript
 function PriorityQueue(cf) {
   const list = [];
