@@ -51,7 +51,6 @@ const quickSort = (arr, left = 0, right = arr.length - 1) => {
   let i = left, j = right, tmp;
   while (i <= j) {
     while (arr[i] < pivot) i++; while (arr[j] > pivot) j--;
-	// (☆)
     i <= j && (tmp = arr[i], arr[i++] = arr[j], arr[j--] = tmp);
   }
   left < i - 1 && quickSort(arr, left, i - 1);
