@@ -109,10 +109,13 @@ Storing the number of rows and columns for 2d-array is advisable.
 function Queue(list = []) {
   let index = 0;
   this.size = () => list.length - index;
-  this.enqueue = val => list[list.length] = val;
-  this.dequeue = () => index < list.length ? list[index++] : null;
   this.first = () => index < list.length ? list[index] : null;
   this.last = () => index < list.length ? list[list.length - 1] : null;
+  this.dequeue = () => index < list.length ? list[index++] : null;
+  this.enqueue = function(val) {
+    list[list.length] = val;
+    return this;
+  };
   this.pop = function() {
     if (index >= list.length) return null;
     const val = list[list.length - 1];
