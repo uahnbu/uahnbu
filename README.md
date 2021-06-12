@@ -106,14 +106,17 @@ Storing the number of rows and columns for 2d-array is advisable.
 ---
 # Frequently used functions
 ```javascript
-function Queue(list = []) {
+function Queue(mylist = []) {
+  const list = [...mylist];
   let index = 0;
-  this.size = () => list.length - index;
-  this.first = () => index < list.length ? list[index] : null;
-  this.last = () => index < list.length ? list[list.length - 1] : null;
+  Object.defineProperties(this, {
+    size: { get: () => list.length - index },
+    first: { get: () => index < list.length ? list[index] : null },
+    last: { get: () => index < list.length ? list[list.length - 1] : null }
+  });
   this.dequeue = () => index < list.length ? list[index++] : null;
-  this.enqueue = function(val) {
-    list[list.length] = val;
+  this.enqueue = function(item) {
+    list[list.length] = item;
     return this;
   };
   this.pop = function() {
@@ -127,10 +130,10 @@ function Queue(list = []) {
 ```javascript
 function PriorityQueue(cf) {
   const list = [];
-  this.size = () => list.length;
+  Object.defineProperty(this, 'size', { get: () => list.length });
   this.enqueue = item => (list[list.length] = item, up(list.length - 1));
   this.dequeue = function() {
-    if (list.length === 0) return;
+    if (list.length === 0) return null;
     const head = list[0];
     list[0] = list[list.length - 1];
     list.length--;
@@ -151,5 +154,7 @@ function PriorityQueue(cf) {
   }
   function swap(a, b) { const tmp = list[a]; list[a] = list[b]; list[b] = tmp }
 }
+
+var maxPriorityQueue = new PriorityQueue((a, b) => a > b);
 var minPriorityQueue = new PriorityQueue((a, b) => a < b);
 ```
