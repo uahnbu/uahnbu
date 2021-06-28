@@ -1,4 +1,4 @@
-Improving your performance is much more than implementing a suitable algorithm. Here are some tips to improve runtime, which are my coding experience using Javascript
+Improving your performance is much more than implementing a suitable algorithm. Here are some tips to improve runtime, which are my coding experience using Javascript.
 
 # Bitwise
 * `(n & 1) === 0` &xlarr; `n % 2 === 0`
