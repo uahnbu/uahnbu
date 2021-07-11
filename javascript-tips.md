@@ -82,16 +82,11 @@ Besides, the trick below will increase your sorting speed by 4 times so long as 
 ```javascript
 function cheatSort(arr) {
   const counter = arr.reduce((cnt, ele) => (cnt[ele] = (cnt[ele] || 0) + 1, cnt), {});
-  // (☆)
-  let sorted = new Set(arr.reduce((arr, ele) => (arr[ele] = ele, arr), []));
+  const sorted = new Set(arr.reduce((arr, ele) => (arr[ele] = ele, arr), []));
+  let i = 0;
   sorted.delete(undefined);
-  sorted = [...sorted];
-  // The lines above alone are enough if the elements are unique
-  for (let i = 0, p = 0; i < sorted.length; i++) {
-    const ele = sorted[i];
-    let rep = counter[ele];
-    do {} while (arr[p++] = ele, --rep !== 0);
-  }
+  sorted.forEach(e => { do {} while (arr[i++] = e, --counter[e] !== 0) });
+  // If the elements are unique just return [...sorted]
 }
 ```
 
