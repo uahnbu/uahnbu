@@ -150,6 +150,38 @@ function PriorityQueue(cf) {
   function swap(a, b) { const tmp = list[a]; list[a] = list[b]; list[b] = tmp }
 }
 
-var maxPriorityQueue = new PriorityQueue((a, b) => a > b);
-var minPriorityQueue = new PriorityQueue((a, b) => a < b);
+const maxPriorityQueue = new PriorityQueue((a, b) => a > b);
+const minPriorityQueue = new PriorityQueue((a, b) => a < b);
+```
+```javascript
+function kSum(nums, target, k, start = 0) {
+  const tuples = [];
+  if (k === 2) {
+    let lo = start, hi = nums.length - 1, sum;
+    while (lo < hi) {
+      sum = nums[lo] + nums[hi];
+      if (sum > target) --hi;
+      else if (sum < target) ++lo;
+      else {
+        tuples[tuples.length] = [nums[lo], nums[hi]];
+        while (nums[lo] === nums[lo + 1]) ++lo;
+        while (nums[hi] === nums[hi - 1]) --hi;
+        ++lo;
+      }
+    }
+    return tuples;
+  }
+  for (let i = start; i < nums.length; i++) {
+    if (k * nums[i] > target) break;
+    if (i > start && nums[i] === nums[i - 1]) continue;
+    const iSum = kSum(nums, target - nums[i], k - 1, i + 1);
+    for (let j = 0; j < iSum.length; j++) {
+      iSum[j].unshift(nums[i]);
+      tuples[tuples.length] = iSum[j];
+    }
+  }
+  return tuples;
+};
+
+const fourSum = (nums, target) => kSum(nums.sort((a, b) => a - b), target, 4);
 ```
