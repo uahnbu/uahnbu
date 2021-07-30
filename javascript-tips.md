@@ -185,3 +185,43 @@ function kSum(nums, target, k, start = 0) {
 
 const fourSum = (nums, target) => kSum(nums.sort((a, b) => a - b), target, 4);
 ```
+```javascript
+function Trie() {
+  const trie = {};
+  this.insert = function(key, val) {
+    let node = trie;
+    for (let i = 0; i < key.length; i++) {
+      node = node[key[i]] ||= {};
+    }
+    node.val = val;
+  };
+  this.search = function(key) {
+    let node = trie;
+    for (let i = 0; i < key.length; i++) {
+      if (!(node = node[key[i]])) return null;
+    }
+    return node.val ?? null;
+  };
+  this.remove = function(key) {
+    let node = trie;
+    for (let i = 0; i < key.length; i++) {
+      if (!(node = node[key[i]])) return false;
+    }
+    return delete node.val;
+  };
+  this.searchPrefix = function(prefix) {
+    let node = trie;
+    for (let i = 0; i < prefix.length; i++) {
+      if (!(node = node[prefix[i]])) return {};
+    }
+    const matches = {};
+    (function dfs(node, key) {
+      node.val != null && (matches[key] = node.val);
+      for (const prop in node) {
+        prop !== 'val' && dfs(node[prop], key + prop);
+      }
+    })(node, prefix);
+    return matches;
+  };
+}
+```
