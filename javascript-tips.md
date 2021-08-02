@@ -107,7 +107,7 @@ function Queue(mylist = []) {
   Object.defineProperties(this, {
     size: { get: () => list.length - index },
     first: { get: () => index < list.length ? list[index] : null },
-    last: { get: () => index < list.length ? list[list.length - 1] : null }
+    last: { get: () => index < list.length ? list[~-list.length] : null }
   });
   this.dequeue = () => index < list.length ? list[index++] : null;
   this.enqueue = function(item) {
@@ -116,7 +116,7 @@ function Queue(mylist = []) {
   };
   this.pop = function() {
     if (index >= list.length) return null;
-    const val = list[list.length - 1];
+    const val = list[~-list.length];
     --list.length;
     return val;
   };
@@ -126,22 +126,21 @@ function Queue(mylist = []) {
 function PriorityQueue(cf) {
   const list = [];
   Object.defineProperty(this, 'size', { get: () => list.length });
-  this.enqueue = item => (list[list.length] = item, up(list.length - 1));
+  this.enqueue = item => (list[list.length] = item, up(~-list.length));
   this.dequeue = function() {
     if (list.length === 0) return null;
     const head = list[0];
-    list[0] = list[list.length - 1];
-    list.length--;
-    down(0);
+    list[0] = list[~-list.length];
+    --list.length, down(0);
     return head;
   };
   function up(child) {
     if (child === 0) return;
-    const parent = child - 1 >> 1;
+    const parent = ~-child >> 1;
     cf(list[child], list[parent]) && (swap(child, parent), up(parent));
   }
   function down(parent) {
-    const left = parent << 1 | 1, right = left + 1;
+    const left = parent << 1 | 1, right = -~left;
     let child = -1;
     left < list.length && (child = left);
     right < list.length && cf(list[right], list[left]) && (child = right);
@@ -157,25 +156,25 @@ const minPriorityQueue = new PriorityQueue((a, b) => a < b);
 function kSum(nums, target, k, start = 0) {
   const tuples = [];
   if (k === 2) {
-    let lo = start, hi = nums.length - 1, sum;
+    let lo = start, hi = ~-nums.length, sum;
     while (lo < hi) {
       sum = nums[lo] + nums[hi];
       if (sum > target) --hi;
       else if (sum < target) ++lo;
       else {
         tuples[tuples.length] = [nums[lo], nums[hi]];
-        while (nums[lo] === nums[lo + 1]) ++lo;
-        while (nums[hi] === nums[hi - 1]) --hi;
+        while (nums[lo] === nums[-~lo]) ++lo;
+        while (nums[hi] === nums[~-hi]) --hi;
         ++lo;
       }
     }
     return tuples;
   }
-  for (let i = start; i < nums.length; i++) {
+  for (let i = start; i < nums.length; ++i) {
     if (k * nums[i] > target) break;
-    if (i > start && nums[i] === nums[i - 1]) continue;
-    const iSum = kSum(nums, target - nums[i], k - 1, i + 1);
-    for (let j = 0; j < iSum.length; j++) {
+    if (i > start && nums[i] === nums[~-i]) continue;
+    const iSum = kSum(nums, target - nums[i], ~-k, -~i);
+    for (let j = 0; j < iSum.length; ++j) {
       iSum[j].unshift(nums[i]);
       tuples[tuples.length] = iSum[j];
     }
@@ -190,28 +189,28 @@ function Trie() {
   const trie = {};
   this.insert = function(key, val) {
     let node = trie;
-    for (let i = 0; i < key.length; i++) {
+    for (let i = 0; i < key.length; ++i) {
       node = node[key[i]] ||= {};
     }
     node.val = val;
   };
   this.search = function(key) {
     let node = trie;
-    for (let i = 0; i < key.length; i++) {
+    for (let i = 0; i < key.length; ++i) {
       if (!(node = node[key[i]])) return null;
     }
     return node.val ?? null;
   };
   this.remove = function(key) {
     let node = trie;
-    for (let i = 0; i < key.length; i++) {
+    for (let i = 0; i < key.length; ++i) {
       if (!(node = node[key[i]])) return false;
     }
     return delete node.val;
   };
   this.searchPrefix = function(prefix) {
     let node = trie;
-    for (let i = 0; i < prefix.length; i++) {
+    for (let i = 0; i < prefix.length; ++i) {
       if (!(node = node[prefix[i]])) return {};
     }
     const matches = {};
