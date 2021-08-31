@@ -4,6 +4,9 @@ I'm passionate about making front-end projects. Welcome to my Github page.
 ![Overall Stats](https://github-readme-stats.vercel.app/api?username=uahnbu&count_private=true&show_icons=true&hide=contribs)
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=uahnbu&layout=compact)
 
+## Some of my projects:
+* [QR Code Scanner](https://uahnbu.github.io/qr)
+
 ## Find me around the web 🌐:
 * My Javascript performance tips and some other useful functions at [this repo](./javascript-tips.md).
 * My visual arts at [Codepen](https://codepen.io/uahnbu).
