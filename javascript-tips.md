@@ -153,6 +153,102 @@ const maxPriorityQueue = new PriorityQueue((a, b) => a > b);
 const minPriorityQueue = new PriorityQueue((a, b) => a < b);
 ```
 ```javascript
+function FastPriorityQueue(cp, list = []) {
+  let size = list.length;
+  Object.defineProperty(this, 'size', { get: () => size });
+  Object.defineProperty(this, 'list', { get: () => list });
+  this.clone = () => new PriorityQueue(cp, list.slice(0, size));
+  this.heapify = arr => {
+    size = list.length = arr.length;
+    for (let i = 0; i < arr.length; ++i) list[i] = arr[i];
+    for (let i = size >> 1; i >= 0; --i) percolateDown(i);
+  };
+  this.push = val => void (list[size] = val, percolateUp(size++));
+  this.pop = () => {
+    if (size === 0) return;
+    const ans = list[0];
+    if (--size === 0) return ans;
+    list[0] = list[size], percolateDown(0);
+    return ans;
+  };
+  this.kTop = k => {
+    if (size === 0) return [];
+    k = Math.min(size, k);
+    const newSize = Math.min((k > 0 ? 2 ** ~-k : 0) + 1, size);
+    const pq = new PriorityQueue(cp, list.slice(0, newSize));
+    const podium = Array(k).fill().map(() => pq.pop());
+    return podium;
+  };
+  this.peek = () => size === 0 ? void 0 : list[0];
+  this.trim = () => void(list = list.slice(0, size));
+  this.isEmpty = () => size === 0;
+  this.forEach = cb => {
+    if (size === 0 || typeof cb !== "function") return;
+    const pq = new PriorityQueue(cp, list.slice(0, size));
+    for (let i = 0; i < size; ++i) cb(pq.pop(), i);
+  };
+  this.replaceTop = val => {
+    if (size === 0) return;
+    const ans = list[0];
+    return list[0] = val, percolateDown(0), ans;
+  };
+  this.remove = val => {
+    for (let i = 0; i < size; ++i) {
+      if (cp(list[i], val) || cp(val, list[i])) continue;
+      return removeAt(i), true;
+    }
+    return false;
+  };
+  this.removeMatch = cb => {
+    if (typeof cb !== 'function') return;
+    for (var i = 0; i < size; ++i) {
+      if (cb(list[i])) return removeAt(i);
+    }
+  };
+  this.removeMatchAll = (cb, limit) => {
+    if (size === 0 || typeof cb !== "function") return [];
+    limit = Math.min(limit || Infinity, size);
+    const res = Array(limit), tmp = Array(size);
+    let resSize = 0, tmpSize = 0;
+    while (size !== 0 && resSize < limit) {
+      const item = this.pop();
+      if (cb(item)) res[resSize++] = item;
+      else tmp[tmpSize++] = item;
+    }
+    res.length = resSize;
+    for (let i = 0; i < tmpSize; ++i) this.push(tmp[i]);
+    return res;
+  };
+  const removeAt = i => {
+    if (i > size - 1 || i < 0) return;
+    return percolateUp(i, true), this.pop();
+  };
+  const percolateUp = (i, forced) => {
+    let val = list[i], p, ap;
+    while (i > 0) {
+      ap = list[p = ~-i >> 1];
+      if (!forced && !cp(val, ap)) break;
+      list[i] = ap, i = p;
+    }
+    list[i] = val;
+  };
+  const percolateDown = i => {
+    const hsize = size >>> 1, ai = list[i];
+    let l, r, bestc;
+    while (i < hsize) {
+      bestc = list[l = i << 1 | 1], r = l + 1;
+      if (r < size && cp(list[r], bestc)) bestc = list[l = r];
+      if (!cp(bestc, ai)) break;
+      list[i] = bestc, i = l;
+    }
+    list[i] = ai;
+  };
+}
+
+const maxPriorityQueue = new PriorityQueue((a, b) => a > b);
+const minPriorityQueue = new PriorityQueue((a, b) => a < b);
+```
+```javascript
 function kSum(nums, target, k, start = 0) {
   const tuples = [];
   if (k === 2) {
