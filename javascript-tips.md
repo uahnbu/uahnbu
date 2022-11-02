@@ -245,8 +245,8 @@ function FastPriorityQueue(cp, list = []) {
   };
 }
 
-const maxPriorityQueue = new PriorityQueue((a, b) => a > b);
-const minPriorityQueue = new PriorityQueue((a, b) => a < b);
+const maxPriorityQueue = new FastPriorityQueue((a, b) => a > b);
+const minPriorityQueue = new FastPriorityQueue((a, b) => a < b);
 ```
 ```javascript
 function kSum(nums, target, k, start = 0) {
