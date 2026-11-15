@@ -10,6 +10,7 @@
 
 ## Some of my projects:
 * [QR Code Scanner](https://uahnbu.github.io/qr)
+* [Word Rush Game](https://github.com/uahnbu/word-rush) 
 * [File Transfer](https://github.com/uahnbu/file-transfer/tree/electron)
 * [Lively Reload - VS Marketplace](https://marketplace.visualstudio.com/items?itemName=uahnbu.lively-reload)
 
